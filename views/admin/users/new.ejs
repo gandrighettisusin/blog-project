@@ -1,0 +1,38 @@
+<%- include('../../partials/header.ejs'); -%>
+<%-include('../../partials/navbar.ejs'); -%>
+
+
+<div class="container mt-3">
+    <div class="card">
+      <div class="card-header">
+        <h2>Novo Usuário</h2>
+      </div>
+      <div class="card-body">
+        <form method="POST" action="/users/save">
+            <div class="row">
+                <div class="col-6 col-md-6">
+                    <input class="form-control" type="text" name="full_name" placeholder="Digite o nome completo.">
+                </div>
+                <div class="col-6 col-md-6">
+                    <input class="form-control" type="email" name="email" placeholder="Digite o e-mail.">
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-6 col-md-6">
+                    <input class="form-control" type="password" name="password" placeholder="Digite a senha.">
+                </div>
+                <div class="col-6 col-md-6">
+                    <input class="form-control" type="password" name="password_confirmation" placeholder="Digite a senha novamente.">
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-2 col-md2">
+                    <button class="btn btn-primary">Salvar</button>
+                </div>
+            </div>
+        </form>
+      </div>
+    </div>
+</div>
+
+<%- include('../../partials/footer.ejs'); -%>

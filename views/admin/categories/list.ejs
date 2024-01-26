@@ -1,0 +1,76 @@
+<%- include('../../partials/header.ejs'); -%>
+<%-include('../../partials/navbar.ejs'); -%>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<div class="container mt-3">
+  <div class="card">
+    <div class="card-header">
+      <h2>Categorias</h2>
+      <a class="btn btn-primary" href="/admin/categories/new">Nova Categoria</a>
+    </div>
+    <div class="card-body">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Título</th>
+            <th>Slug</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% categories.forEach(category => { %>
+          <tr>
+            <th><%= category.id %></th>
+            <th><%= category.title %></th>
+            <th><%= category.slug %></th>
+            <th>
+              <a
+                class="btn btn-ligth btn-sm"
+                href="/admin/categories/edit/<%= category.id %>"
+              >
+                <span class="material-icons"> create </span>
+              </a>
+              <form
+                method="POST"
+                style="display: inline"
+                action="/admin/categories/delete/<%= category.id %>"
+                onsubmit="confirmDelete(event, this)"
+              >
+                <input type="hidden" name="id" value="<%= category.id %>" />
+                <button class="btn btn-danger btn-sm">
+                  <span class="material-icons">delete_outline</span>
+                </button>
+              </form>
+            </th>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+  function confirmDelete(event, form) {
+    event.preventDefault();
+    const formSubmitted = event.target.form;
+
+    Swal.fire({
+      title: "Deseja deletar?",
+      text: "Deseja deletar essa categoria?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sim",
+      cancelButtonText: "Não",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        form.submit();
+      }
+    });
+  }
+</script>
+
+<%- include('../../partials/footer.ejs'); -%>

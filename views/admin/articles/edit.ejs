@@ -1,0 +1,85 @@
+<%- include('../../partials/header.ejs'); -%>
+<%-include('../../partials/navbar.ejs'); -%>
+
+<div class="container mt-3">
+  <div class="card">
+    <div class="card-header">
+      <h2>Edição de Artigo</h2>
+    </div>
+    <div class="card-body">
+      <form method="POST" action="/articles/update">
+        <input type="hidden" name="id" value="<%= article.id %>" />
+        <input
+          class="form-control"
+          type="text"
+          name="title"
+          value="<%= article.title %>"
+          placeholder="Defina o título do artigo."
+        />
+        <br />
+        <input
+          class="form-control"
+          type="text"
+          name="slug"
+          value="<%= article.slug %>"
+        />
+        <br />
+        <textarea
+          id="article"
+          name="body"
+          class="form-control"
+          placeholder="Escreva seu artigo aqui."
+        ></textarea>
+        <br />
+        <label>Categoria</label>
+        <select name="category" class="form-control">
+          <% categories.forEach((category) => { %> <% if (category.id ===
+          article.categoryId) { %>
+          <option value="<%= category.id %>" selected>
+            <%= category.title %>
+          </option>
+          <% } else { %>
+          <option value="<%= category.id %>"><%= category.title %></option>
+          <% } %> <% }) %>
+        </select>
+        <br />
+        <button class="btn btn-primary">Salvar</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div id="content" style="display: none"><%- article.body %></div>
+
+<script src="/tinymce/tinymce.min.js"></script>
+<script>
+  tinymce.init({
+    selector: "#article",
+    languages: "pt_BR",
+    plugins: [
+      "advlist",
+      "autolink",
+      "link",
+      "image",
+      "lists",
+      "preview",
+      "searchreplace",
+      "wordcount",
+      "fullscreen",
+      "insertdatetime",
+      "media",
+      "save",
+      "table",
+      "emoticons",
+    ],
+    init_instance_callback: () => {
+      tinymce.get("article").setContent($("#content").html());
+    },
+    // setup: (editor) => {
+    //   editor.on("init", () => {
+    //     editor.setContent($("#content").html());
+    //   });
+    // },
+  });
+</script>
+<%- include('../../partials/footer.ejs'); -%>

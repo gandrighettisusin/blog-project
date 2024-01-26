@@ -1,0 +1,89 @@
+<%- include('../../partials/header.ejs'); -%>
+<%-include('../../partials/navbar.ejs'); -%>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<div class="container mt-3">
+  <div class="card">
+    <div class="card-header">
+      <h2>Artigos</h2>
+      <a class="btn btn-primary" href="/admin/articles/new">Novo Artigo</a>
+    </div>
+    <div class="card-body">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Título</th>
+            <th>Slug</th>
+            <th>Categoria</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% articles.forEach(article => { %>
+          <tr>
+            <th><%= article.id %></th>
+            <th><%= article.title %></th>
+            <th><%= article.slug %></th>
+            <th><%= article.category.title %></th>
+            <th>
+              <a
+                class="btn btn-ligth btn-sm"
+                href="/admin/articles/edit/<%= article.id %>"
+              >
+                <span class="material-icons"> create </span>
+              </a>
+              <form
+                method="POST"
+                style="display: inline"
+                action="/admin/articles/delete/<%= article.id %>"
+                onsubmit="confirmDelete(event, this)"
+              >
+                <input type="hidden" name="id" value="<%= article.id %>" />
+                <button class="btn btn-danger btn-sm">
+                  <span class="material-icons">delete_outline</span>
+                </button>
+              </form>
+            </th>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+      <div class="row">
+        <div class="col col-12">
+          <% if (page > 1) { %>
+            <a style="float: left" href="/admin/articles/page/<%= page - 1%>"><<< Prev</a>
+          <% } %>
+
+          <% if (next) { %>
+            <a style="float: right" href="/admin/articles/page/<%= page + 1%>">Next >>></a>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function confirmDelete(event, form) {
+    event.preventDefault();
+    const formSubmitted = event.target.form;
+
+    Swal.fire({
+      title: "Deseja deletar?",
+      text: "Deseja deletar esse artigo?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sim",
+      cancelButtonText: "Não",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        form.submit();
+      }
+    });
+  }
+</script>
+
+<%- include('../../partials/footer.ejs'); -%>
